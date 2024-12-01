@@ -1,52 +1,81 @@
-Nette Web Project
-=================
+## Vytvorenie noveho atributu
 
-Welcome to the Nette Web Project! This is a basic skeleton application built using
-[Nette](https://nette.org), ideal for kick-starting your new web projects.
+`App\Model\Pet.php`
 
-Nette is a renowned PHP web development framework, celebrated for its user-friendliness,
-robust security, and outstanding performance. It's among the safest choices
-for PHP frameworks out there.
+1. vytvorit novu konstantu `const ATTRIBUTES = "atributy"`
+2. vlozit ju do `$fillable`
+3. ak atribut bude pole 
+   1. vytvorit novu konstantu podla singularu slova `const ATTRIBUTE = "atribut"`
+   2. vlozit konstantu `ATTRIBUTES` do `ARRAY_FIELDS`
+   3. vlozit konstantu `ATTRIBUTE` do `SINGULAR_ELEMENTS` v tvare `ATTRIBUTES => ATTRIBUTE`
+   4. vytvorit typed property s nazvom atributu `public array $attributes = []`
+   5. v konstruktore triedy Pet, do `match()` funkcie pre array elementy doplnit `self::ATTRIBUTES`
 
-If Nette helps you, consider supporting it by [making a donation](https://nette.org/donate).
-Thank you for your generosity!
+    
+## API volania
 
+### POST /api/pet/create
+vytvorenie zvieratka
 
-Requirements
-------------
+```json
+{
+  "name": "Peso1",
+  "category": {
+    "id": 1,
+    "name": "Dogs"
+  },
+  "age": 5,
+  "owners": [
+    {
+        "id": 0,
+        "name": "Jozko Mrkvicka"
+    }
+  ],
+  "photoUrls": [
+    "eeeeee.png"
+  ],
+  "tags": [
+    {
+      "id": 0,
+      "name": "corgi"
+    }
+  ],
+  "status": "unavailable"
+}
+```
 
-This Web Project is compatible with Nette 3.2 and requires PHP 8.1.
+### PUT /api/pet/update
+editovanie zvieratka, vstup rovnaky, pokial bude element chybat, tak sa vymaze
 
+```json
+{
+  "name": "Peso1",
+  "category": {
+    "id": 1,
+    "name": "Dogs"
+  },
+  "age": 5,
+  "owners": [
+    {
+        "id": 0,
+        "name": "Jozko Mrkvicka"
+    }
+  ],
+  "photoUrls": [
+    "eeeeee.png"
+  ],
+  "tags": [
+    {
+      "id": 0,
+      "name": "corgi"
+    }
+  ],
+  "status": "unavailable"
+}
+```
 
-Installation
-------------
+### GET /api/pet/[id]
+vyhladanie zvieratka, treba dodat hladane ID
 
-To install the Web Project, Composer is the recommended tool. If you're new to Composer,
-follow [these instructions](https://doc.nette.org/composer). Then, run:
-
-	composer create-project nette/web-project path/to/install
-	cd path/to/install
-
-Ensure the `temp/` and `log/` directories are writable.
-
-
-Web Server Setup
-----------------
-
-To quickly dive in, use PHP's built-in server:
-
-	php -S localhost:8000 -t www
-
-Then, open `http://localhost:8000` in your browser to view the welcome page.
-
-For Apache or Nginx users, configure a virtual host pointing to your project's `www/` directory.
-
-**Important Note:** Ensure `app/`, `config/`, `log/`, and `temp/` directories are not web-accessible.
-Refer to [security warning](https://nette.org/security-warning) for more details.
-
-
-Minimal Skeleton
-----------------
-
-For demonstrating issues or similar tasks, rather than starting a new project, use
-this [minimal skeleton](https://github.com/nette/web-project/tree/minimal).
+### DELETE /api/pet/delete/[id]
+vymazanie zvieratka, treba dodat ID na zmazanie

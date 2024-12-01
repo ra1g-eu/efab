@@ -37,7 +37,12 @@ class Pet
     //novy pomocny atribut
     const OWNER = 'owner';
 
-    const ARRAY_FIELDS = [self::TAGS, self::PHOTOURLS, self::OWNERS];
+    const ARRAY_FIELDS = [
+        self::TAGS,
+        self::PHOTOURLS,
+        //nove atributy
+        self::OWNERS
+    ];
     const SINGULAR_ELEMENTS = [
         self::TAGS => self::TAG,
         self::PHOTOURLS => self::PHOTOURL,
@@ -67,18 +72,14 @@ class Pet
                     $this->{$key} = $value;
                 } elseif (is_array($value)) {
                     match ($key) {
-                        self::CATEGORY => $this->category = [
-                            self::ID => (int)$value[self::ID],
-                            self::NAME => (string)$value[self::NAME],
-                        ],
+                        //array elementy
                         self::TAGS,
-                        self::OWNERS => $this->{$key} = array_map(function ($item) {
-                            return [
-                                'id' => (int)($item['id'] ?? 0),
-                                'name' => (string)($item['name'] ?? ''),
-                            ];
-                        }, $value),
+                        self::OWNERS => $this->{$key} = array_map(fn($item) => $this->getFormattedElement($item), $value),
+                        //objekt elementy
+                        self::CATEGORY => $this->category = $this->getFormattedElement($value),
+                        //specificke elementy
                         self::PHOTOURLS => $this->photoUrls = array_map('strval', $value),
+                        //ostatne
                         default => array_map(function () use ($key, $value) {
                             foreach ($value as $nestedKey => $nestedValue) {
                                 $this->{$key} = $nestedValue;
@@ -92,6 +93,18 @@ class Pet
                 }
             }
         }
+    }
+
+    /**
+     * @param $item
+     * @return array
+     */
+    private function getFormattedElement($item): array
+    {
+        return [
+            self::ID => (int)($item[self::ID] ?? 0),
+            self::NAME => (string)($item[self::NAME] ?? ''),
+        ];
     }
 
 
