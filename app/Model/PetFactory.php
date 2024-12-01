@@ -45,6 +45,20 @@ final class PetFactory
         return $pets;
     }
 
+    /**
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        $attributes = Pet::getFillable();
+        $arrayAttributes = Pet::ARRAY_FIELDS;
+
+        return [
+            'attributes' => $attributes,
+            'arrayAttributes' => $arrayAttributes,
+        ];
+    }
+
 
     /**
      * @param int $id

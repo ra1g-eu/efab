@@ -211,4 +211,16 @@ final class PetPresenter extends Nette\Application\UI\Presenter
         }
         $this->sendResponse($response);
     }
+
+    public function actionGetAttributes(): void
+    {
+        $response = new JsonResponse(
+            [
+                'success' => true,
+                'message' => 'Attributes were successfully retrieved.',
+                'data' => $this->petFactory->getAttributes(),
+            ]
+        );
+        $this->sendResponse($response);
+    }
 }

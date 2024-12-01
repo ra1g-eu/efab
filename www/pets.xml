@@ -100,4 +100,62 @@
             </tag>
         </tags>
     </pet>
+    <pet>
+        <id>8</id>
+        <name>formDog</name>
+        <category>
+            <id>0</id>
+            <name>Dogs</name>
+        </category>
+        <photoUrls>
+            <url>photodog.png</url>
+        </photoUrls>
+        <tags>
+            <tag>
+                <id>0</id>
+                <name>tag1</name>
+            </tag>
+            <tag>
+                <id>0</id>
+                <name>tag2</name>
+            </tag>
+        </tags>
+        <status>sold</status>
+        <age>3</age>
+        <owners>
+            <owner>
+                <id>0</id>
+                <name>John Doe</name>
+            </owner>
+        </owners>
+    </pet>
+    <pet>
+        <id>9</id>
+        <name>formDog2</name>
+        <category>
+            <id>0</id>
+            <name>Dogs</name>
+        </category>
+        <photoUrls>
+            <url>formdogphoto.png</url>
+        </photoUrls>
+        <tags>
+            <tag>
+                <id>3</id>
+                <name>dddd1</name>
+            </tag>
+            <tag>
+                <id>3</id>
+                <name>ddd2</name>
+            </tag>
+        </tags>
+        <status>available</status>
+        <age>9</age>
+        <owners>
+            <owner>
+                <id>2</id>
+                <name>Doe John</name>
+            </owner>
+        </owners>
+    </pet>
 </pets>

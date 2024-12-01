@@ -24,6 +24,7 @@ final class RouterFactory
         $router->addRoute('api/pet/update', 'Pet:update');
         $router->addRoute('api/pet[/<id>]', 'Pet:find');
         $router->addRoute('api/pet/delete/<id>', 'Pet:delete');
+        $router->addRoute('api/attributes', 'Pet:getAttributes');
 
         // Add more routes here...
 
