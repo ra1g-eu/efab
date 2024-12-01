@@ -1,0 +1,11 @@
+services:
+	- App\Core\RouterFactory::createRouter
+	- App\Model\PetManager(xmlDirectory: '%wwwDir%/xml')
+	- App\Model\PetFactory(xmlFile: '%wwwDir%/pets.xml')
+	- App\Model\AttributeManager(@database.default.context)
+
+search:
+	-	in: %appDir%
+		classes:
+			- *Factory
+			- *Facade

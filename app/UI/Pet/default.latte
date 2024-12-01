@@ -1,0 +1,94 @@
+{block content}
+    <h1>Zoznam zvieratiek</h1>
+    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Pridať nové zvieratko</a>
+    <div class="mb-4">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                {foreach $attributes as $attribute}
+                    <th>{$attribute->getName()}</th>
+                {/foreach}
+                <th>Akcie</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $pets as $pet}
+                <tr>
+                    <td>{$pet['id']}</td>
+                    {foreach $attributes as $attribute}
+                        <td>{!empty($pet['data'][$attribute->getName()]) ? $pet['data'][$attribute->getName()] : '-'}</td>
+                    {/foreach}
+                    <td>
+                        <a n:href="edit! id => $pet['id']" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                             data-bs-target="#editModal">Upraviť</a>
+                        <a n:href="delete! id => $pet['id']" class="btn btn-sm btn-danger">Vymazať</a>
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal na úpravu zvieratka -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Upraviť zvieratko</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" name="id" id="editPetId">
+                        {foreach $attributes as $attribute}
+                            <div class="mb-3">
+                                <label for="edit-{$attribute->getName()}" class="form-label">
+                                    {$attribute->getName()}
+                                {if $attribute->isRequired()}
+                                        <span class="text-danger">*</span>
+                                    {/if}
+                                </label>
+                                <input type="text" class="form-control {if $attribute->isRequired()} is-required {/if}"
+                                       id="edit-{$attribute->getName()}" name="{$attribute->getName()}"
+                                        {if $attribute->isRequired()} required {/if}>
+                            </div>
+                        {/foreach}
+                        <button type="submit" class="btn btn-primary">Uložiť</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">Pridať nové zvieratko</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createForm">
+                        {foreach $attributes as $attribute}
+                            <div class="mb-3">
+                                <label for="create-{$attribute->getName()}" class="form-label">
+                                    {$attribute->getName()}
+                                {if $attribute->isRequired()}
+                                        <span class="text-danger">*</span>
+                                    {/if}
+                                </label>
+                                <input type="text" class="form-control {if $attribute->isRequired()} is-required {/if}"
+                                       id="create-{$attribute->getName()}" name="{$attribute->getName()}"
+                                        {if $attribute->isRequired()} required {/if}>
+                            </div>
+                        {/foreach}
+                        <button type="submit" class="btn btn-primary">Uložiť</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{/block}

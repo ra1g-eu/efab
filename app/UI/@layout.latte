@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{block title}Sprava zvieratok{/block}</title>
+	<link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">Správa zvieratok</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link {if $presenter->getName() == 'Pet' && $presenter->getAction() == 'default'}active{/if}" href="{link Pet:default}">Zvieratká</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {if $presenter->getName() == 'Attribute' && $presenter->getAction() == 'default'}active{/if}" href="{link Attribute:default}">Atribúty</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container mt-5">
+	{foreach $flashes as $flash}
+		<div class="alert alert-dismissible alert-{$flash->type}">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			<p class="mb-0">{$flash->message}</p>
+		</div>
+	{/foreach}
+	{block content}{/block}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+	document.getElementById('createForm').addEventListener('submit', async function (event) {
+		event.preventDefault();
+
+		const formData = new FormData(this);
+		const data = Object.fromEntries(formData.entries());
+
+		const response = await fetch('/api/pet/create', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		});
+
+		const result = await response.json();
+		console.log(result);
+	});
+
+	// AJAX pre úpravu zvieratka
+	$(document).on('click', '[data-bs-target="#editModal"]', function (e) {
+		const petId = $(this).data('id');
+
+		$.get(`/api/pet/update/${ petId}`, function (response) {
+			// Naplní údaje do modálneho okna
+			for (const key in response.data) {
+				$(`#edit-${ key}`).val(response.data[key]);
+			}
+			$('#editPetId').val(response.id);
+		});
+	});
+
+</script>
+</body>
+</html>

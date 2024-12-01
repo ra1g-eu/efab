@@ -1,0 +1,40 @@
+{block content}
+    <h1>Správa atribútov</h1>
+
+    <div class="mb-4">
+        <h2>Existujúce atribúty</h2>
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Názov</th>
+                <th>Typ</th>
+                <th>Povinný</th>
+                <th>Akcie</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $attributes as $attribute}
+                <tr>
+                    <td>{$attribute->getId()}</td>
+                    <td>{$attribute->getName()}</td>
+                    <td>{$attribute->getType()}</td>
+                    <td>{if $attribute->isRequired()}Áno{else}Nie{/if}</td>
+                    <td>
+                        <a n:href="delete! id => $attribute->getId()" class="btn btn-danger btn-sm">Vymazať</a>
+                    </td>
+                </tr>
+            {/foreach}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <div class="card text-white bg-primary mb-3" style="max-width: 30rem;">
+            <div class="card-header">Pridanie nového atribútu</div>
+            <div class="card-body">
+                {control attributeForm}
+            </div>
+        </div>
+    </div>
+{/block}
